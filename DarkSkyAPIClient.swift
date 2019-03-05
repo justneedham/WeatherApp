@@ -26,7 +26,6 @@ class DarkSkyAPIClient {
     typealias WeatherCompletionHandler = (Weather?, Error?) -> Void
     typealias CurrentWeatherCompletionHandler = (CurrentWeather?, Error?) -> Void
 
-
     private func getWeather(at coordinate: Coordinate, completionHandler completion: @escaping WeatherCompletionHandler) {
         guard let url = URL(string: coordinate.description, relativeTo: baseUrl) else {
             completion(nil, DarkSkyError.invalidUrl)

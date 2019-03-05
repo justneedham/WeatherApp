@@ -23,12 +23,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        client.getCurrentWeather(at: Coordinate.alcatrazIsland, completionHandler: { [ unowned self ] currentWeather, error in
-            if let currentWeather = currentWeather {
-                let viewModel = CurrentWeatherViewModel(model: currentWeather)
-                self.displayWeather(using: viewModel)
-            }
-        })
+        toggleRefreshAnimation(on: true)
+        getCurrentWeather()
+
 
     }
 
@@ -38,6 +35,26 @@ class ViewController: UIViewController {
         currentPrecipitationLabel.text = viewModel.precipitationProbability
         currentSummaryLabel.text = viewModel.summary
         currentWeatherIcon.image = viewModel.icon
+    }
+    
+    @IBAction func getCurrentWeather() {
+        client.getCurrentWeather(at: Coordinate.alcatrazIsland, completionHandler: { [ unowned self ] currentWeather, error in
+            if let currentWeather = currentWeather {
+                let viewModel = CurrentWeatherViewModel(model: currentWeather)
+                self.displayWeather(using: viewModel)
+                self.toggleRefreshAnimation(on: false)
+            }
+        })
+    }
+    
+    func toggleRefreshAnimation(on: Bool) {
+        refreshButton.isHidden = on
+        
+        if on {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
     }
 }
 
