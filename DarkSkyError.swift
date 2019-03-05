@@ -10,4 +10,5 @@ enum DarkSkyError: Error {
     case responseUnsuccessful(statusCode: Int)
     case invalidData
     case jsonParsingFailure
+    case invalidUrl
 }
