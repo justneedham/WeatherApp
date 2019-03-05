@@ -22,20 +22,21 @@ class DarkSkyAPIClient {
             completion(nil, .invalidUrl)
             return
         }
-        print(url)
         let request = URLRequest(url: url)
         let task = downloader.jsonTask(with: request) { json, error in
-            guard let json = json else {
-                completion(nil, error)
-                return
-            }
+            DispatchQueue.main.async {
+                guard let json = json else {
+                    completion(nil, error)
+                    return
+                }
 
-            guard let weather = Weather(json: json) else {
-                completion(nil, .jsonParsingFailure)
-                return
+                guard let weather = Weather(json: json) else {
+                    completion(nil, .jsonParsingFailure)
+                    return
+                }
+
+                completion(weather, nil)
             }
-            
-            completion(weather, nil)
         }
 
         task.resume()

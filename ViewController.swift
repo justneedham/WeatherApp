@@ -23,9 +23,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        client.getCurrentWeather(at: Coordinate.alcatrazIsland, completionHandler: { currentWeather, error in
-            print(currentWeather)
-            print(error)
+        client.getCurrentWeather(at: Coordinate.alcatrazIsland, completionHandler: { [ unowned self ] currentWeather, error in
+            if let currentWeather = currentWeather {
+                let viewModel = CurrentWeatherViewModel(model: currentWeather)
+                self.displayWeather(using: viewModel)
+            }
         })
 
     }
