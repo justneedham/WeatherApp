@@ -18,9 +18,26 @@ class ViewController: UIViewController {
     @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
+    fileprivate let darkSkyApiKey = "3ed18b7c5dc64c7e42c34708619c3835"
+    let forecastUrl = URL(string: "https://api.darksky.net/forecast/3ed18b7c5dc64c7e42c34708619c3835/37.8267,-122.4233")
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+
+        let base = URL(string: "https://api.darksky.net/forecast/\(darkSkyApiKey)/")
+        guard let forecastUrl = URL(string: "37.8267,-122.4233", relativeTo: base) else {
+            return
+        }
+
+        let request = URLRequest(url: forecastUrl)
+        let session = URLSession(configuration: .default)
+        let dataTask = session.dataTask(with: request) { data, response, error in
+            print(data)
+        }
+
+        dataTask.resume()
+
 
         let currentWeather = CurrentWeather(
                 temperature: 85.0,
